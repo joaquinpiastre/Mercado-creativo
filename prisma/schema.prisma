@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ReservationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Category {
+  id           String        @id @default(cuid())
+  name         String
+  slug         String        @unique
+  description  String
+  price        Int
+  capacity     Int
+  features     String[]
+  imageUrl     String?
+  active       Boolean       @default(true)
+  order        Int           @default(0)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  reservations Reservation[]
+}
+
+model Reservation {
+  id           String            @id @default(cuid())
+  categoryId   String
+  category     Category          @relation(fields: [categoryId], references: [id])
+  fullName     String
+  dniCuit      String
+  phone        String
+  email        String
+  businessName String
+  sellsWhat    String
+  notes        String?
+  status       ReservationStatus @default(PENDING)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  @@index([categoryId, status])
+  @@index([status])
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model SiteSettings {
+  id              Int      @id @default(1)
+  whatsappNumber  String
+  paymentAlias    String
+  paymentBankName String?
+  heroSubtitle    String?
+  fairAddress     String
+  fairDescription String?
+  updatedAt       DateTime @updatedAt
+}
