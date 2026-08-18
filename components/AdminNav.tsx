@@ -1,13 +1,14 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   LayoutDashboard,
   ClipboardList,
   Store,
   Settings,
   LogOut,
-  Lightbulb,
 } from "lucide-react";
 import { logout } from "@/app/actions/auth";
+import logoMark from "@/public/logo-mark.png";
 
 const links = [
   { href: "/admin/dashboard", label: "Resumen", icon: LayoutDashboard },
@@ -21,8 +22,14 @@ export function AdminNav({ username }: { username?: string }) {
     <header className="border-b border-ink-800/10 bg-sand-50">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-ink-900 text-gold-400">
-            <Lightbulb className="h-5 w-5" strokeWidth={2.25} />
+          <span className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full ring-1 ring-ink-800/10">
+            <Image
+              src={logoMark}
+              alt="Mercado Creativo"
+              fill
+              sizes="40px"
+              className="object-cover"
+            />
           </span>
           <div>
             <p className="font-display text-sm leading-tight font-semibold text-ink-950">
